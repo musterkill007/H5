@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.h5.hou.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.h5.hou.entity.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_pwd
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserIdAndUserPwd" resultMap="BaseResultMap">
+    select
+      user_id,user_pwd
+    from `user`
+    where user_id=#{userId,jdbcType=INTEGER} and user_pwd=#{userPwd,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.h5.hou.entity.User" >
+    insert into user
+    values (#{userId,jdbcType=INTEGER}, #{userPwd,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.h5.hou.entity.User" >
+    update user
+    <set >
+      <if test="userPwd != null" >
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.h5.hou.entity.User" >
+    update user
+    set user_pwd = #{userPwd,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+</mapper>
